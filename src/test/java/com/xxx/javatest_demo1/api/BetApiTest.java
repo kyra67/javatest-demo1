@@ -1,15 +1,20 @@
 package com.xxx.javatest_demo1.api;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.notNullValue;
+
+import org.testng.annotations.*;
+
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import org.junit.jupiter.api.*;
+
 import static io.restassured.RestAssured.*;
+import static io.restassured.matcher.RestAssuredMatchers.*;
 import static org.hamcrest.Matchers.*;
 
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class BetApiTest {
 	
-	@BeforeAll
+	@BeforeClass
 	static void setup() {
 		// 启动 mock server
         MockServer.start();
@@ -18,10 +23,7 @@ public class BetApiTest {
         RestAssured.port = 5000;
 	}
 	
-	@Test
-	@Order(1)
-	@Tag("smoke")
-	@DisplayName("API-下注成功")
+	@Test(priority = 1, description = "下注成功")
 	void testCreateBetSuccess() {
 		given()
 			.header("Authorization", "Bearer token_abc123")
@@ -35,10 +37,7 @@ public class BetApiTest {
 			.body("status", equalTo("ACCEPTED"));
 	}
 	
-	@Test
-    @Order(2)
-    @Tag("regression")
-    @DisplayName("API-无token返回401")
+	@Test(priority = 2, description = "API-无token返回401")
 	void testCreateBetNoToken() {
 		given()
         	.contentType(ContentType.JSON)
@@ -49,10 +48,7 @@ public class BetApiTest {
         	.statusCode(401);
 	}
 	
-	@Test
-    @Order(3)
-    @Tag("regression")
-    @DisplayName("API-金额过小返回400")
+	@Test(priority = 2, description = "API-金额过小返回400")
     void testCreateBetInvalidAmount() {
         given()
             .header("Authorization", "Bearer token_abc123")

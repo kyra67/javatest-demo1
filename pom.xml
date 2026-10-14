@@ -20,13 +20,29 @@
   </properties>
 
   <dependencies>
-    <dependency>
+    <!--<dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
       <scope>test</scope>
-    </dependency>
+    </dependency>-->
     
+    <!-- JUnit 5 -->
+    <!--<dependency>
+    	<groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter</artifactId>
+        <version>${junit.version}</version>
+        <scope>test</scope>
+    </dependency>-->
+    
+    <!-- TestNG -->
+    <dependency>
+    	<groupId>org.testng</groupId>
+    	<artifactId>testng</artifactId>
+    	<version>7.10.2</version>
+    	<scope>test</scope>
+	</dependency>
+        
     <!-- mock -->
     <dependency>
     	<groupId>org.wiremock</groupId>
@@ -34,14 +50,6 @@
     	<version>3.3.1</version>
     	<scope>test</scope>
 	</dependency>
-    
-    <!-- JUnit 5 -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
     
     <!-- RestAssured (API 测试) -->
         <dependency>
@@ -81,7 +89,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.1</version>
+                <version>3.5.0</version>
                 <configuration>
                     <!-- 测试报告输出目录（Jenkins 会读这个） -->
                     <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
