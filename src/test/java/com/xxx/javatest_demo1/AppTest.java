@@ -1,38 +1,33 @@
 package com.xxx.javatest_demo1;
 
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.function.Executable;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.testng.Assert;
+import org.testng.annotations.*;
 
 public class AppTest {
 	
 	private Calculator calculator;
 	
-	@BeforeEach
+	@BeforeMethod
 	void setUp() {
 		calculator = new Calculator();
 	}
 	
-	@Test
-	@DisplayName("加法测试")
+	@Test(priority = 1, description = "加法测试")
 	void testAdd() {
 		assertEquals(5, calculator.add(2, 3));
 	}
 	
-	@Test
-	@DisplayName("除零异常测试")
+	@Test(priority = 2, description = "除零异常测试")
 	void testDivideByZero() {
-		assertThrows(IllegalArgumentException.class, new Executable() {
-			public void execute() throws Throwable {
-				calculator.divide(10, 0);
-			}
+		Assert.assertThrows(IllegalArgumentException.class, () -> {
+			calculator.divide(10, 0);
 		});
 	}
 	
-	@Test
-	@Tag("smoke")
-	@DisplayName("冒烟-加法")
+	@Test(priority = 2, description = "冒烟-加法")
 	void testAddSmoke() {
 		assertTrue(calculator.add(1, 1) == 2);
 	}
