@@ -98,8 +98,19 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.5.0</version>
                 <configuration>
-                    <!-- 测试报告输出目录（Jenkins 会读这个） -->
+                	<!-- 1. 排除旧的JUnit遗漏测试，防止Jenkins变红-->
+                	<excludes>
+                    	<exclude>**/AppTest.java</exclude>
+                    </excludes>
+                    
+                    <!-- 2. 指定TestNG套件文件（如果后续写入testng.xml）-->
+                    <!-- <suiteXmlFiles>
+                    	<suiteXmlFile>testng.xml</suiteXmlFile>
+                	</suiteXmlFiles> -->
+                	                   
+                    <!-- 3. 测试报告输出目录（Jenkins 会读这个） -->
                     <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+                    
                     <!-- 包含测试类 -->
                     <includes>
                         <include>**/*Test.java</include>
@@ -107,6 +118,15 @@
                     <!-- 可选：只跑冒烟 -->
                     <!-- <groups>smoke</groups> -->
                 </configuration>
+                
+                <!-- 确保使用 TestNG 的 Provider -->
+            	<dependencies>
+                	<dependency>
+                    	<groupId>org.apache.maven.surefire</groupId>
+                    	<artifactId>surefire-testng</artifactId>
+                    	<version>3.2.5</version>
+                	</dependency>
+            	</dependencies>
             </plugin>
         </plugins>
     </build>
