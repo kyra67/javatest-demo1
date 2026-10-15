@@ -30,7 +30,8 @@ public class LoginTest {
 		driver.manage().window().maximize();
 	}
 	
-	@Test(priority = 1, description = "打开腾讯公益页验证欢迎语")
+//	@Test(priority = 1, description = "打开腾讯公益页验证欢迎语")
+	@Test(priority = 1, groups = {"ui", "smoke"})
 	public void testOpenTencentGY() {
 		driver.get("https://gongyi.qq.com");
 		

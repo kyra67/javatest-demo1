@@ -104,9 +104,9 @@
                     </excludes>
                     
                     <!-- 2. 指定TestNG套件文件（如果后续写入testng.xml）-->
-                    <!-- <suiteXmlFiles>
-                    	<suiteXmlFile>testng.xml</suiteXmlFile>
-                	</suiteXmlFiles> -->
+                    <suiteXmlFiles>
+                    	<suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
+                	</suiteXmlFiles>
                 	                   
                     <!-- 3. 测试报告输出目录（Jenkins 会读这个） -->
                     <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
