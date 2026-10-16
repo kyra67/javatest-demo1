@@ -17,8 +17,12 @@ public class LoginTest {
 	
 	private WebDriver driver;
 	
-	@BeforeMethod
+	@BeforeMethod(alwaysRun = true)
 	public void setUp() {
+		if(this.driver != null) {
+			this.driver.quit(); 
+			this.driver = null;
+		}
 		WebDriverManager.chromedriver().setup();
 		
 		ChromeOptions options = new ChromeOptions();
@@ -77,8 +81,9 @@ public class LoginTest {
 	
 	@AfterMethod
 	public void tearDown() {
-		if (driver != null) {
-			driver.quit();
+		if (this.driver != null) {
+			this.driver.quit();
+			this.driver = null;
 		}
 	}
 

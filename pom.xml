@@ -105,7 +105,7 @@
                     
                     <!-- 2. 指定TestNG套件文件（如果后续写入testng.xml）-->
                     <suiteXmlFiles>
-                    	<suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
+                    	<suiteXmlFile>src/test/resources/testng-${suite}.xml</suiteXmlFile>
                 	</suiteXmlFiles>
                 	                   
                     <!-- 3. 测试报告输出目录（Jenkins 会读这个） -->
