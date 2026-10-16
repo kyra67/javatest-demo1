@@ -1,0 +1,17 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Smoke-Suite" verbose="1" preserve-order="true">
+	<test name="Smoke-UI-and-HappyPath">
+		<groups>
+			<run>
+				<include name="smoke" />
+				<!-- 明确排除回归专用数据，smoke不跑边界值 -->
+				<exclude name="regression-only" />
+			</run>
+		</groups>
+		<classes>
+			<class name="com.xxx.javatest_demo1.ui.LoginTest" />
+			<!-- API happy path 方法也打了 @Test(groups={"smoke"}) 就会进来 -->
+			<class name="com.xxx.javatest_demo1.api.BetApiTest" />
+		</classes>
+	</test>
+</suite>
