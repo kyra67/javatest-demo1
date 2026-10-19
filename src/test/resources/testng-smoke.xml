@@ -8,10 +8,15 @@
 				<exclude name="regression-only" />
 			</run>
 		</groups>
+		
 		<classes>
 			<class name="com.xxx.javatest_demo1.ui.LoginTest" />
 			<!-- API happy path 方法也打了 @Test(groups={"smoke"}) 就会进来 -->
 			<class name="com.xxx.javatest_demo1.api.BetApiTest" />
 		</classes>
 	</test>
+	
+	<listeners>
+		<listener class-name="io.qameta.allure.testng.AllureTestNg" />
+	</listeners>
 </suite>

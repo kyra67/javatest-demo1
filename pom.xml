@@ -19,6 +19,9 @@
     <restassured.version>5.3.2</restassured.version>
     <selenium.version>4.15.0</selenium.version>
     <suite>smoke</suite>
+    <!-- Allure版本 -->
+    <allure.version>2.24</allure.version>
+    <allure.testng.version>2.24.0</allure.testng.version>
   </properties>
 
   <dependencies>
@@ -61,28 +64,36 @@
 	</dependency>
     
     <!-- RestAssured (API 测试) -->
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-            <version>${restassured.version}</version>
-            <scope>test</scope>
-        </dependency>
+    <dependency>
+    	<groupId>io.rest-assured</groupId>
+        <artifactId>rest-assured</artifactId>
+        <version>${restassured.version}</version>
+        <scope>test</scope>
+   	</dependency>
 
-        <!-- Selenium (UI 测试) -->
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-java</artifactId>
-            <version>4.25.0</version>
-            <scope>test</scope>
-        </dependency>
+    <!-- Selenium (UI 测试) -->
+    <dependency>
+    	<groupId>org.seleniumhq.selenium</groupId>
+        <artifactId>selenium-java</artifactId>
+        <version>4.25.0</version>
+        <scope>test</scope>
+    </dependency>
 
-        <!-- AssertJ 断言增强 -->
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>3.24.2</version>
-            <scope>test</scope>
-        </dependency>
+    <!-- AssertJ 断言增强 -->
+    <dependency>
+        <groupId>org.assertj</groupId>
+        <artifactId>assertj-core</artifactId>
+        <version>3.24.2</version>
+        <scope>test</scope>
+    </dependency>
+    
+    <!-- Allure TestNG 适配器 -->
+    <dependency>
+    	<groupId>io.qameta.allure</groupId>
+    	<artifactId>allure-testng</artifactId>
+    	<version>${allure.testng.version}</version>
+    	<scope>test</scope>
+    </dependency>
   </dependencies>
   
   <build>
@@ -93,7 +104,17 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
             </plugin>
-
+            
+            <!-- Allure Maven插件 -->
+			<plugin>
+				<groupId>io.qameta.allure</groupId>
+				<artifactId>allure-maven</artifactId>
+				<version>${allure.version}</version>
+				<configuration>
+					<reportVersion>${allure.version}</reportVersion>
+				</configuration>
+			</plugin>
+			
             <!-- Surefire 插件：跑测试 + 生成 JUnit XML 报告 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

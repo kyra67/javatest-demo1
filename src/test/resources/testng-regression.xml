@@ -22,4 +22,8 @@
 			<class name="com.xxx.javatest_demo1.ui.LoginTest" />
 		</classes>
 	</test>
+	
+	<listeners>
+		<listener class-name="io.qameta.allure.testng.AllureTestNg" />
+	</listeners>
 </suite>
