@@ -23,7 +23,7 @@ pipeline {
 
         stage('Build & Test') {
             steps {
-                bat 'mvn clean test -Dsuite=${suite}'
+                bat 'mvn clean test -Dsuite=${params.suite}'
             }
         }
 
