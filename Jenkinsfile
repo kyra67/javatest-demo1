@@ -23,7 +23,7 @@ pipeline {
 
         stage('Build & Test') {
             steps {
-                bat 'mvn clean test -Dsuite=${params.suite}'
+                bat "mvn clean test -Dsuite=${params.suite}"
             }
         }
 
@@ -32,13 +32,13 @@ pipeline {
                 branch 'main'
             }
             steps {
-                bat 'mvn test -Dgroups=smoke'
+                bat "mvn test -Dgroups=smoke"
             }
         }
         
         stage('Report') {
         	steps {
-        		junit '**/target/surefire-reports/*.xml'
+        		junit "**/target/surefire-reports/*.xml"
         	}
         }
         
