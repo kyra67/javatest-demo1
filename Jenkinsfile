@@ -1,6 +1,14 @@
+properties {
+	choice(name: 'suite', choices: ['smoke', 'regression'], description: '选择测试套件')
+}
+
 pipeline {
     agent any
-
+    
+    options {
+    	timestamps()
+    }
+	
     tools {
         jdk 'JDK11'           // Jenkins 里配置的 JDK 名称
         maven 'Maven3'        // Jenkins 里配置的 Maven 名称
@@ -15,7 +23,7 @@ pipeline {
 
         stage('Build & Test') {
             steps {
-                bat 'mvn clean test'
+                bat 'mvn clean test -Dsuite=${suite}'
             }
         }
 
@@ -27,6 +35,13 @@ pipeline {
                 bat 'mvn test -Dgroups=smoke'
             }
         }
+        
+        stage('Report') {
+        	steps {
+        		junit '**/target/surefire-reports/*.xml'
+        	}
+        }
+        
     }
 
     post {
