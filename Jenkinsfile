@@ -15,31 +15,25 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
+        stage('Checkout 拉取源码') {
             steps {
                 checkout scm
             }
         }
 
-        stage('Build & Test') {
+        stage('Build & 执行测试') {
             steps {
-                bat "mvn clean test -Dsuite=${params.suite}"
+            	script {
+            		if (env.BRANCH_NAME == "main") {
+            			runSuite = "smoke"
+            			echo ">>> 当前是main分支，强制使用smoke套件，忽略页面选择参数"
+            		} else {
+            			runSuite = params.suite
+            			echo ">>> 当前分支：${env.BRANCH_NAME}，使用选中套件：${runSuite}"
+            		}
+            	}
+            	bat "mvn clean test -Dsuite=${runSuite}"
             }
-        }
-
-        stage('Smoke Only') {
-            when {
-                branch 'main'
-            }
-            steps {
-                bat "mvn test -Dgroups=smoke"
-            }
-        }
-        
-        stage('Report') {
-        	steps {
-        		junit "**/target/surefire-reports/*.xml"
-        	}
         }
         
     }
