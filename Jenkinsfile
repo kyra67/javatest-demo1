@@ -1,7 +1,3 @@
-properties {
-	choice(name: 'suite', choices: ['smoke', 'regression'], description: '选择测试套件')
-}
-
 pipeline {
     agent any
     
@@ -12,6 +8,10 @@ pipeline {
     tools {
         jdk 'JDK11'           // Jenkins 里配置的 JDK 名称
         maven 'Maven3'        // Jenkins 里配置的 Maven 名称
+    }
+    
+    parameters {
+    	choice(name: 'suite', choices: ['smoke', 'regression'], description: '选择要跑的测试套件')
     }
 
     stages {
