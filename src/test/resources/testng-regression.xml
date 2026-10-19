@@ -11,6 +11,7 @@
 			<class name="com.xxx.javatest_demo1.api.BetApiTest" />
 		</classes>
 	</test>
+	
 	<test name="UI-Regression">
 		<groups>
 			<run>
