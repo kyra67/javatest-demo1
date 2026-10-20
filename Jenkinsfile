@@ -37,7 +37,7 @@ pipeline {
             	env.runSuite = runSuite
             	
             	// 执行mvn，returnStatus捕获返回码，测试失败不会直接终止流水线
-            	def exitCode = bat returnStatus: true, script: "mvn clean test - DsuiteXmlFile=test-${runSuite}.xml"
+            	def exitCode = bat returnStatus: true, script: """chcp 65001 mvn clean test - DsuiteXmlFile=test-${runSuite}.xml"""
             	
             	// 保存mvn执行结果到环境变量
             	evn.MVN_EXIT_CODE = ecitCode
