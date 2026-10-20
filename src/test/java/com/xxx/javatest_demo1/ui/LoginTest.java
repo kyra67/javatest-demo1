@@ -49,7 +49,7 @@ public class LoginTest {
 		Assert.assertTrue(text.contains("腾讯公益"));
 	}
 	
-	@Test(priority = 2, description = "搜索框输入并验证")
+	@Test(priority = 2, groups = {"ui"}, description = "搜索框输入并验证")
 	public void testSearchInput() {
 		driver.get("https://gongyi.qq.com");
 		
@@ -77,6 +77,12 @@ public class LoginTest {
 	    String currentUrl = driver.getCurrentUrl();
 	    System.out.println("搜索后URL: " + currentUrl);
 	    Assert.assertTrue(currentUrl.contains("s_key=" + encoded), "URL应包含搜索关键词");
+	}
+	
+	@Test(priority=3, groups = {"ui"}, description = "失败截图验证")
+	public void testLoginFail() {
+		driver.get("https://gongyi.qq.com");
+		driver.findElement(By.id("kw")).click();
 	}
 	
 	@AfterMethod
