@@ -11,6 +11,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.*;
+
+import com.xxx.javatest_demo1.ScreenshotListener;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class LoginTest {
@@ -32,6 +35,8 @@ public class LoginTest {
 		
 		driver = new ChromeDriver(options);
 		driver.manage().window().maximize();
+		
+		ScreenshotListener.driver = this.driver;
 	}
 	
 //	@Test(priority = 1, description = "打开腾讯公益页验证欢迎语")
@@ -49,7 +54,7 @@ public class LoginTest {
 		Assert.assertTrue(text.contains("腾讯公益"));
 	}
 	
-	@Test(priority = 2, groups = {"ui"}, description = "搜索框输入并验证")
+	@Test(priority = 2, groups = {"ui", "smoke"}, description = "搜索框输入并验证")
 	public void testSearchInput() {
 		driver.get("https://gongyi.qq.com");
 		
@@ -79,7 +84,7 @@ public class LoginTest {
 	    Assert.assertTrue(currentUrl.contains("s_key=" + encoded), "URL应包含搜索关键词");
 	}
 	
-	@Test(priority=3, groups = {"ui"}, description = "失败截图验证")
+	@Test(priority=3, groups = {"ui", "smoke"}, description = "失败截图验证")
 	public void testLoginFail() {
 		driver.get("https://gongyi.qq.com");
 		driver.findElement(By.id("kw")).click();

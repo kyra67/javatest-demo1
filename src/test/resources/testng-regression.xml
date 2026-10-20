@@ -25,5 +25,6 @@
 	
 	<listeners>
 		<listener class-name="io.qameta.allure.testng.AllureTestNg" />
+		<listener class-name="com.xxx.javatest_demo1.ScreenshotListener" />
 	</listeners>
 </suite>
