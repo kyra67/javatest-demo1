@@ -14,8 +14,6 @@ import org.testng.annotations.*;
 
 import com.xxx.javatest_demo1.ScreenshotListener;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
-
 public class LoginTest {
 	
 	private WebDriver driver;
@@ -26,8 +24,8 @@ public class LoginTest {
 			this.driver.quit(); 
 			this.driver = null;
 		}
-		WebDriverManager.chromedriver().setup();
 		
+		// 启动 Chrome（由 Selenium 自动匹配 chromedriver）
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("--headless=new");
 		options.addArguments("--no-sandbox");
