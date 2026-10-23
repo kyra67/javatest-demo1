@@ -6,7 +6,7 @@ pipeline {
     }
 	
     tools {
-        jdk 'JDK11'           // Jenkins 里配置的 JDK 名称
+        jdk 'JDK21'           // Jenkins 里配置的 JDK 名称
         maven 'Maven3'        // Jenkins 里配置的 Maven 名称
         allure 'Allure2'      // 对应全局工具配置里的Allure名称
     }
