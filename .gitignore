@@ -1,3 +1,14 @@
 target/
 .idea/
 *.iml
+
+# IDE配置文件
+.classpath
+.project
+.settings/
+.vs/
+.vscode/
+
+# allure测试报告输出
+allure-results/
+allure-report/
