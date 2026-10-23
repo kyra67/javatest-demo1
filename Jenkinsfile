@@ -8,7 +8,7 @@ pipeline {
     tools {
         jdk 'JDK21'           // Jenkins 里配置的 JDK 名称
         maven 'Maven3'        // Jenkins 里配置的 Maven 名称
-        allure 'Allure2'      // 对应全局工具配置里的Allure名称
+        // allure 'Allure2'      // 对应全局工具配置里的Allure名称
     }
     
     parameters {
@@ -37,16 +37,16 @@ pipeline {
             	env.runSuite = runSuite
             	
             	// 执行mvn，returnStatus捕获返回码，测试失败不会直接终止流水线
-            	def exitCode = bat returnStatus: true, script: """chcp 65001 mvn clean test - DsuiteXmlFile=test-${runSuite}.xml"""
+            	def exitCode = bat returnStatus: true, script: """
+					chcp 65001
+					mvn clean test - DsuiteXmlFile=test-${runSuite}.xml"""
             	
             	// 保存mvn执行结果到环境变量
-            	evn.MVN_EXIT_CODE = ecitCode
+            	env.MVN_EXIT_CODE = exitCode
             }
         }
-        
-    }
-    
-    stage('质量门禁判断') {
+
+		stage('质量门禁判断') {
     	steps {
     		script {
     			// 读取allure结果统计失败用例数量
@@ -66,11 +66,15 @@ pipeline {
     					error("❌ Regression套件失败超过阈值！允许最多2个，实际失败：${failedCount}，流水线终止！")
     				} else {
     					echo "✅ Regression套件失败数量在允许阈值内，继续通过"
+    					}
     				}
     			}
     		}
     	}
+        
     }
+    
+    
 
     post {
         always {
