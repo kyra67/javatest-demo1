@@ -25,21 +25,24 @@ pipeline {
         stage('Build & 执行测试') {
             steps {
             	script {
-            		if (env.BRANCH_NAME == "main") {
+					def runSuite
+
+            	    if (env.BRANCH_NAME == "main") {
             			runSuite = "smoke"
             			echo ">>> 当前是main分支，强制使用smoke套件，忽略页面选择参数"
             		} else {
             			runSuite = params.suite
             			echo ">>> 当前分支：${env.BRANCH_NAME}，使用选中套件：${runSuite}"
             		}
+					// 把套件名存入环境变量，后面stage/post都可以读取
+            	    env.runSuite = runSuite
             	}
-            	// 把套件名存入环境变量，后面stage/post都可以读取
-            	env.runSuite = runSuite
+            	
             	
             	// 执行mvn，returnStatus捕获返回码，测试失败不会直接终止流水线
-            	def exitCode = bat returnStatus: true, script: """
-					chcp 65001
-					mvn clean test - DsuiteXmlFile=test-${runSuite}.xml"""
+            	bat """
+				    chcp 65001
+				    mvn clean test - DsuiteXmlFile=test-${runSuite}.xml"""
             	
             	// 保存mvn执行结果到环境变量
             	env.MVN_EXIT_CODE = exitCode
