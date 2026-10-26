@@ -38,7 +38,7 @@ pipeline {
             	    env.runSuite = runSuite
 
 					// bat放到script里面，用returnStatus捕获退出码
-					def mnvExitCode = bat(
+					def mvnExitCode = bat(
 						returnStatus: true,
 						script: """
                             chcp 65001
