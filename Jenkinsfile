@@ -16,6 +16,16 @@ pipeline {
     }
 
     stages {
+		stage('Clean old allure results') {
+            steps {
+                // 清空旧的allure原始结果，防止新旧数据混在一起（解决你刚才16条脏数据的坑！）
+                bat '''
+                    if exist allure-results rmdir /s /q allure-results
+                    if exist allure-report rmdir /s /q allure-report
+                '''
+            }
+        }
+		
         stage('Checkout 拉取源码') {
             steps {
                 checkout scm
