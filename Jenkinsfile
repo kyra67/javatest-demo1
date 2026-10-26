@@ -46,7 +46,7 @@ pipeline {
                         """
 					)
 					// 保存mvn执行结果到环境变量
-            	    env.MVN_EXIT_CODE = mnvExitCode.toString()
+            	    env.MVN_EXIT_CODE = mvnExitCode.toString()
             	}
             }
         }
