@@ -47,34 +47,40 @@ pipeline {
             }
         }
 
-        stage('质量门禁判断') {
+        stage('质量门禁判断 Quality Gate') {
             steps {
                 script {
-					// 获取allure根目录，拼接allure.bat完整路径，规避Windows内置节点PATH注入bug
+                    // 获取allure根目录，拼接allure.bat完整路径，规避Windows内置节点PATH注入bug
                     def allureHome = tool 'Allure2'
                     def allureBat = "${allureHome}\\bin\\allure.bat"
-					
+
                     bat """
                         chcp 65001
-                        allure calculateResults allure-results --json=gate-result.json
+                        "${allureBat}" calculateResults allure-results --json=gate-result.json
                     """
-                    def allureResult = readJson(file: 'gate-result.json')
-                    def failureCount = allureResult.failed
-                    def totalCount = allureResult.total
-                    def passedCount = allureResult.passed
-                    echo ">>> allure统计结果：总数=${totalCount}, 通过=${passedCount}, 失败=${failureCount}"
 
-                    if(env.runSuite == 'smoke') {
-                        if(failureCount > 0) {
-                            error "❌ smoke套件有失败用例，失败数量：${failureCount}"
-                        }else{
-                            echo "✅ smoke套件全部通过, 0失败"
+                    // 读取allure输出的json统计结果
+                    def gateJson = readJSON file: 'gate-result.json'
+                    def totalCount = gateJson.statistic.total
+                    def passedCount = gateJson.statistic.passed
+                    def failedCount = gateJson.statistic.failed
+                    def skippedCount = gateJson.statistic.skipped
+                    def brokenCount = gateJson.statistic.broken
+
+                    echo ">>> Allure统计：总数=${totalCount}, 通过=${passedCount}, 失败=${failedCount}, 跳过=${skippedCount}, 异常=${brokenCount}"
+
+                    if (env.runSuite == 'smoke') {
+                        if (failedCount > 0 || brokenCount > 0) {
+                            error "❌ Quality Gate不通过：Smoke套件不允许失败/异常！失败=${failedCount},异常=${brokenCount}"
+                        } else {
+                            echo "✅ Quality Gate 通过：Smoke套件全部用例执行成功"
                         }
-                    }else if(env.runSuite == 'regression') {
-                        if(failureCount > 2) {
-                            error "❌ regression套件失败用例超过2个，失败数量：${failureCount}"
-                        }else{
-                            echo "✅ regression套件失败用例数量在可接受范围内，失败数量：${failureCount}"
+                    } else if (env.runSuite == 'regression') {
+                        // regression允许最多2个失败（broken也计入阻断）
+                        if (failedCount + brokenCount > 2) {
+                            error "❌ Quality Gate不通过：Regression失败+异常超过阈值2！失败=${failedCount},异常=${brokenCount}"
+                        } else {
+                            echo "✅ Quality Gate 通过：Regression失败+异常数量在阈值内"
                         }
                     }
                 }
