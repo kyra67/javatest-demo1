@@ -50,35 +50,42 @@ pipeline {
         stage('质量门禁判断 Quality Gate') {
             steps {
                 script {
-                    // 获取allure根目录，拼接allure.bat完整路径，规避Windows内置节点PATH注入bug
-                    def allureHome = tool 'Allure2'
-                    def allureBat = "${allureHome}\\bin\\allure.bat"
+                    def allResultFiles = findFiles glob: 'allure-results/*.json'
+                    int failedCount = 0
+                    int brokenCount = 0
+                    int passedCount = 0
+                    int skippedCount = 0
 
-                    bat """
-                        chcp 65001
-                        "${allureBat}" calculateResults allure-results --json=gate-result.json
-                    """
+                    allResultFiles.each { fileItem ->
+                        def caseJson = readJSON file: fileItem.path
+                        def status = caseJson.status
+                        switch(status) {
+                            case 'failed':
+                                failedCount++
+                                break
+                            case 'broken':
+                                brokenCount++
+                                break
+                            case 'passed':
+                                passedCount++
+                                break
+                            case 'skipped':
+                                skippedCount++
+                                break
+                        }
+                    }
 
-                    // 读取allure输出的json统计结果
-                    def gateJson = readJSON file: 'gate-result.json'
-                    def totalCount = gateJson.statistic.total
-                    def passedCount = gateJson.statistic.passed
-                    def failedCount = gateJson.statistic.failed
-                    def skippedCount = gateJson.statistic.skipped
-                    def brokenCount = gateJson.statistic.broken
-
-                    echo ">>> Allure统计：总数=${totalCount}, 通过=${passedCount}, 失败=${failedCount}, 跳过=${skippedCount}, 异常=${brokenCount}"
+                    echo ">>> Allure统计：passed=${passedCount}, failed=${failedCount}, broken=${brokenCount}, skipped=${skippedCount}"
 
                     if (env.runSuite == 'smoke') {
                         if (failedCount > 0 || brokenCount > 0) {
-                            error "❌ Quality Gate不通过：Smoke套件不允许失败/异常！失败=${failedCount},异常=${brokenCount}"
+                            error "❌ Quality Gate不通过：Smoke套件不允许失败/异常！failed=${failedCount}, broken=${brokenCount}"
                         } else {
                             echo "✅ Quality Gate 通过：Smoke套件全部用例执行成功"
                         }
                     } else if (env.runSuite == 'regression') {
-                        // regression允许最多2个失败（broken也计入阻断）
                         if (failedCount + brokenCount > 2) {
-                            error "❌ Quality Gate不通过：Regression失败+异常超过阈值2！失败=${failedCount},异常=${brokenCount}"
+                            error "❌ Quality Gate不通过：Regression失败+异常总数超过阈值2！failed=${failedCount}, broken=${brokenCount}"
                         } else {
                             echo "✅ Quality Gate 通过：Regression失败+异常数量在阈值内"
                         }
