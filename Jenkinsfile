@@ -45,9 +45,9 @@ pipeline {
                             mvn clean test -DsuiteXmlFile=test-${runSuite}.xml
                         """
 					)
+					// 保存mvn执行结果到环境变量
+            	    env.MVN_EXIT_CODE = mnvExitCode.toString()
             	}
-            	// 保存mvn执行结果到环境变量
-            	env.MVN_EXIT_CODE = mnvExitCode
             }
         }
 
