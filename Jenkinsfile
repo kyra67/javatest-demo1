@@ -36,16 +36,18 @@ pipeline {
             		}
 					// 把套件名存入环境变量，后面stage/post都可以读取
             	    env.runSuite = runSuite
+
+					// bat放到script里面，用returnStatus捕获退出码
+					def mnvExitCode = bat(
+						returnStatus: true,
+						script: """
+                            chcp 65001
+                            mvn clean test -DsuiteXmlFile=test-${runSuite}.xml
+                        """
+					)
             	}
-            	
-            	
-            	// 执行mvn，returnStatus捕获返回码，测试失败不会直接终止流水线
-            	bat """
-				    chcp 65001
-				    mvn clean test - DsuiteXmlFile=test-${runSuite}.xml"""
-            	
             	// 保存mvn执行结果到环境变量
-            	env.MVN_EXIT_CODE = exitCode
+            	env.MVN_EXIT_CODE = mnvExitCode
             }
         }
 
