@@ -52,29 +52,36 @@ pipeline {
         }
 
 		stage('质量门禁判断') {
-    	steps {
-    		script {
-    			// 读取allure结果统计失败用例数量
-    			// allure命令读取结果，返回json，解析失败用例数
-    			def allureResult = allure calculateResults "allure-results"
-    			def failedCount = allureResult.failed
-    			echo ">>> 测试失败用例数量：${failedCount}"
-    			
-    			// 质量门禁规则
-    			if(env.runSuite == "smoke") {
-    				if(failedCount > 0) {
-    					error("❌ Smoke套件不允许任何用例失败，失败数量：${failedCount}，流水线终止！")
-    				}
-    			} else if (env.runSuite == "regression") {
-    				// 回归套件最多允许2个失败
-    				if(failedCount > 2) {
-    					error("❌ Regression套件失败超过阈值！允许最多2个，实际失败：${failedCount}，流水线终止！")
-    				} else {
-    					echo "✅ Regression套件失败数量在允许阈值内，继续通过"
-    					}
-    				}
-    			}
-    		}
+			steps {
+				script {
+					// 1. 调用allure命令输出统计json
+					bat """
+						chcp 65001
+						allure calculateResults allure-results --json=gate-result.json
+					"""
+
+					// 2. 读取json文件，判断失败数
+					def allureResult = readJson(file: 'gate-result.json')
+					def failureCount = allurResult.failed
+					def totalCount = allurResult.total
+					def passedCount = allurResult.passed
+					echo ">>> allure统计结果：总数=${totalCount}, 通过=${passedCount}, 失败=${failureCount}"
+
+					// 门禁规则
+					if(env.runSuite == 'smoke') {
+						if(failureCount > 0) {
+							error "❌ smoke套件有失败用例，失败数量：${failureCount}"
+						}else{
+							echo "✅ smoke套件全部通过, 0失败"
+						}
+					}else if(env.runSuite == 'regression') {
+						if(failureCount > 2) {
+							error "❌ regression套件失败用例超过5个，失败数量：${failureCount}"
+						}else{
+							echo "✅ regression套件失败用例数量在可接受范围内，失败数量：${failureCount}"
+						}
+					}
+			}
     	}
         
     }

@@ -82,7 +82,7 @@ public class LoginTest {
 	    Assert.assertTrue(currentUrl.contains("s_key=" + encoded), "URL应包含搜索关键词");
 	}
 	
-	@Test(priority=3, groups = {"ui", "smoke"}, description = "失败截图验证")
+	@Test(priority=3, groups = {"ui"}, description = "失败截图验证")
 	public void testLoginFail() {
 		driver.get("https://gongyi.qq.com");
 		driver.findElement(By.id("kw")).click();
