@@ -50,6 +50,10 @@ pipeline {
         stage('质量门禁判断') {
             steps {
                 script {
+					// 获取allure根目录，拼接allure.bat完整路径，规避Windows内置节点PATH注入bug
+                    def allureHome = tool 'Allure2'
+                    def allureBat = "${allureHome}\\bin\\allure.bat"
+					
                     bat """
                         chcp 65001
                         allure calculateResults allure-results --json=gate-result.json
