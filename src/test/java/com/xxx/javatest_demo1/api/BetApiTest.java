@@ -25,7 +25,7 @@ public abstract class BetApiTest {
 	@BeforeSuite(alwaysRun = true)
 	public void globalApiSetup() {
 		// 启动 mock server
-		MockServer.start();
+		// MockServer.start();
 		
 		// 本地mockserver
 		RestAssured.baseURI = System.getProperty("api.base", "http://127.0.0.1:5000");

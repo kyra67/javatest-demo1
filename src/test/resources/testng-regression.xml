@@ -4,7 +4,7 @@
 		<groups>
 			<run>
 				<include name="api" />
-				<include name="regression" />
+				<include name="regression"/>
 			</run>
 		</groups>
 		<classes>
