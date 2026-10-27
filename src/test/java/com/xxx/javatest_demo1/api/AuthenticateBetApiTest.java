@@ -3,7 +3,6 @@ package com.xxx.javatest_demo1.api;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import io.restassured.path.json.JsonPath;
 import org.testng.annotations.DataProvider;
 
 import static io.restassured.RestAssured.given;
