@@ -25,7 +25,7 @@ pipeline {
                 '''
             }
         }
-		
+
         stage('Checkout 拉取源码') {
             steps {
                 checkout scm
@@ -103,6 +103,16 @@ pipeline {
                 }
             }
         }
+
+		stage('Allure Report') {
+			steps {
+				allure([
+					results: [[path: 'allure-results']],
+					report: 'allure-report',
+					includeProperties: false
+				])
+			}
+		}
     } // ====== 这个是 stages 的闭合！！所有stage都在它内部 ======
 
     post {
