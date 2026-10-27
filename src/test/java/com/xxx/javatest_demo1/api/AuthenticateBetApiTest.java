@@ -25,10 +25,10 @@ public class AuthenticateBetApiTest extends BetApiTest {
                 .extract().path("data.token");
 	}
 	
-	// 2. DataProvider：依赖 classToken 已就位，TestNG保证顺序：BeforeClass -> DP -> @Test
-    @DataProvider(name = "betScenarios")
-    public Object[][] betScenarios() {
-        return new Object[][] {
+        // 2. DataProvider：依赖 classToken 已就位，TestNG保证顺序：BeforeClass -> DP -> @Test
+        @DataProvider(name = "betScenarios")
+         public Object[][] betScenarios() {
+                return new Object[][] {
                 // raceId,    stake,  expectedHttpStatus,  desc
                 {"R001",      10.0,   201,                 "正常投注"},
                 {"R002",      0.5,    400,                 "低于最小限额"},
