@@ -56,6 +56,16 @@ pipeline {
                 }
             }
         }
+		
+		stage('Allure Report') {
+			steps {
+				allure([
+					results: [[path: 'allure-results']],
+					report: 'allure-report',
+					includeProperties: false
+				])
+			}
+		}
 
         stage('质量门禁判断 Quality Gate') {
             steps {
@@ -104,15 +114,6 @@ pipeline {
             }
         }
 
-		stage('Allure Report') {
-			steps {
-				allure([
-					results: [[path: 'allure-results']],
-					report: 'allure-report',
-					includeProperties: false
-				])
-			}
-		}
     } // ====== 这个是 stages 的闭合！！所有stage都在它内部 ======
 
     post {
