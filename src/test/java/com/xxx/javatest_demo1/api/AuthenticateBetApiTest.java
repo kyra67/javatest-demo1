@@ -55,7 +55,8 @@ public class AuthenticateBetApiTest extends BetApiTest {
     }
     
     /* 4. 非DP的单独用例：查投注列表 */
-    @Test(groups = {"smoke", "regression"}, dependsOnMethods = "testCreateBetWithToken")
+//     @Test(groups = {"smoke", "regression"}, dependsOnMethods = "testCreateBetWithToken")
+    @Test(groups = {"smoke", "regression"})
     public void testQueryBetList() {
         given(authSpec(this.classToken))
                 .when().get("/api/v1/bets")
