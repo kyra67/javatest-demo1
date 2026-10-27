@@ -22,7 +22,7 @@ import com.xxx.javatest_demo1.api.MockServer;
 public abstract class BetApiTest {
 	protected String classToken;
 	
-	@BeforeSuite(alwaysRun = true)
+	@BeforeTest(alwaysRun = true)
 	public void globalApiSetup() {
 		// 启动 mock server
 		// MockServer.start();
@@ -41,7 +41,7 @@ public abstract class BetApiTest {
 		);
 	}
 	
-	@AfterSuite(alwaysRun = true) 
+	@AfterTest(alwaysRun = true) 
 	public void globalTeardown() {
 		RestAssured.reset();
 	}
