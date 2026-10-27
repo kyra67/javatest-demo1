@@ -9,7 +9,7 @@ import org.testng.annotations.DataProvider;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
-@Test(groups = {"api"})
+
 public class AuthenticateBetApiTest extends BetApiTest {
 	
 	private String classToken;

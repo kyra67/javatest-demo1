@@ -8,7 +8,7 @@
 			</run>
 		</groups>
 		<classes>
-			<class name="com.xxx.javatest_demo1.api.BetApiTest" />
+			<class name="com.xxx.javatest_demo1.api.AuthenticateBetApiTest" />
 		</classes>
 	</test>
 	
