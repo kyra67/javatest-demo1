@@ -49,14 +49,14 @@ pipeline {
                         returnStatus: true,
                         script: """
                             chcp 65001
-                            mvn clean test -DsuiteXmlFile=test-${runSuite}.xml
+                            mvn clean test -DsuiteXmlFile=testng-${runSuite}.xml
                         """
                     )
                     env.MVN_EXIT_CODE = mvnExitCode.toString()
                 }
             }
         }
-		
+
 		stage('Allure Report') {
 			steps {
 				allure([
